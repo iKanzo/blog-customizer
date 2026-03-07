@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { RefObject, useRef, useState } from 'react';
 import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
 import { Select } from 'src/ui/select';
@@ -15,6 +15,8 @@ import {
 	OptionType,
 } from 'src/constants/articleProps';
 
+import { useOutsideClickClose } from 'src/ui/select/hooks/useOutsideClickClose';
+
 import styles from './ArticleParamsForm.module.scss';
 
 type ArticleParamsFormProps = {
@@ -26,12 +28,21 @@ export const ArticleParamsForm = ({
 	currentParams,
 	onApply,
 }: ArticleParamsFormProps) => {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [localParams, setLocalParams] = useState(currentParams);
 
+	const menuRef = useRef<HTMLElement>(null);
+
 	const toggleForm = () => {
-		setIsOpen(!isOpen);
+		setIsMenuOpen(!isMenuOpen);
 	};
+
+	useOutsideClickClose({
+		isOpen: isMenuOpen,
+		rootRef: menuRef as RefObject<HTMLDivElement>,
+		onClose: () => setIsMenuOpen(false),
+		onChange: setIsMenuOpen,
+	});
 
 	const handleFontFamilyChange = (selected: OptionType) => {
 		setLocalParams({ ...localParams, fontFamilyOption: selected });
@@ -56,20 +67,23 @@ export const ArticleParamsForm = ({
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		onApply(localParams);
-		setIsOpen(false);
+		setIsMenuOpen(false);
 	};
 
 	const handleReset = () => {
 		setLocalParams(defaultArticleState);
 		onApply(defaultArticleState);
-		setIsOpen(false);
+		setIsMenuOpen(false);
 	};
 
 	return (
 		<>
 			<aside
-				className={`${styles.container} ${isOpen ? styles.container_open : ''}`}
-				aria-hidden={!isOpen}>
+				ref={menuRef}
+				className={`${styles.container} ${
+					isMenuOpen ? styles.container_open : ''
+				}`}
+				aria-hidden={!isMenuOpen}>
 				<form
 					className={styles.form}
 					onSubmit={handleSubmit}
@@ -121,9 +135,9 @@ export const ArticleParamsForm = ({
 
 			<div
 				className={`${styles.arrowWrapper} ${
-					isOpen ? styles.arrowWrapper_open : ''
+					isMenuOpen ? styles.arrowWrapper_open : ''
 				}`}>
-				<ArrowButton isOpen={isOpen} onClick={toggleForm} />
+				<ArrowButton isOpen={isMenuOpen} onClick={toggleForm} />
 			</div>
 		</>
 	);

@@ -1,5 +1,5 @@
-import { useRef } from 'react';
 import type { MouseEventHandler } from 'react';
+import { useRef } from 'react';
 import clsx from 'clsx';
 import { OptionType } from 'src/constants/articleProps';
 import { Text } from 'src/ui/text';
