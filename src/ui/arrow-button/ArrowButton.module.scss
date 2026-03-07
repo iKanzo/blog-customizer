@@ -15,14 +15,11 @@
 
 .container:hover {
 	background-color: #ffc802;
+	border: none;
 }
 
 .container:active {
 	background-color: #787878;
-}
-
-.container_open {
-	transform: translate(616px);
 }
 
 .arrow {
