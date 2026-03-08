@@ -34,7 +34,7 @@ export const ArticleParamsForm = ({
 	const menuRef = useRef<HTMLElement>(null);
 
 	const toggleForm = () => {
-		if (!isOpen) return;
+		if (!isMenuOpen) return;
 		setIsMenuOpen(!isMenuOpen);
 	};
 
