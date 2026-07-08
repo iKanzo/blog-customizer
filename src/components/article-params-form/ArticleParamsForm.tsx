@@ -34,9 +34,8 @@ export const ArticleParamsForm = ({
 	const menuRef = useRef<HTMLElement>(null);
 
 	const toggleForm = () => {
-		if (!isMenuOpen) return;
-		setIsMenuOpen(!isMenuOpen);
-	};
+	  setIsMenuOpen(!isMenuOpen);
+  };
 
 	useOutsideClickClose({
 		isOpen: isMenuOpen,
